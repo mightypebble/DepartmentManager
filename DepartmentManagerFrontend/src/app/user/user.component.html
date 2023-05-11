@@ -1,0 +1,79 @@
+<h2>Welcome, {{name}}</h2>
+<button class="user-back-button" *ngIf="backButtonExists" (click)="back()"><h3>BACK</h3></button>
+<button class="user-logout-button" (click)="logout()"><h3>LOGOUT</h3></button>
+<form class="user-form" (ngSubmit)="onSubmit()" #usertForm="ngForm" ngNativeValidate>
+  <h2>Add User</h2>
+  <div class="input-container">
+    <input type="text" name="name" [(ngModel)]="user.name"  placeholder="name" required>
+    <input type="text" name="surname" [(ngModel)]="user.surname"  placeholder="surname" required>
+    <input type="text" name="age" [(ngModel)]="user.age"  placeholder="age" required>
+    <input type="text" name="ucn" [(ngModel)]="user.ucn"  placeholder="UCN" required>
+    <input type="text" name="username" [(ngModel)]="user.username"  placeholder="username" required>
+    <input type="text" name="password" [(ngModel)]="user.password"  placeholder="password" required>
+  </div>
+  <select name="position" [(ngModel)]="user.position" id="position" required>
+    <option selected disabled>Position</option>
+    <option value="employee">Employee</option>
+    <option *ngIf="!hasHead" value="head">Head of Department</option> <!-- must not be shown if head already exists -->
+  </select>
+  <p *ngIf="passwordError">
+    Password needs to be at least 8 characters long with 
+    at lease 1 upper case, 1 lower case, 1 number and 1 special symbol characters
+  </p>
+  <p *ngIf="usernameError">
+    Username is taken
+  </p>
+  <p *ngIf="ucnError">
+    A user with that UCN already exists.
+  </p>
+  <button>Add</button>
+</form>
+<h1 class="user-header">{{department}} employees</h1>
+<input class="user-search" #searchBox type="text" (keyup.enter)="search(searchBox.value, searchBox.value.length)" placeholder="Search by name">
+<div class="user-nav">
+  <button class="arrow-first" (click)="firstPage()"></button>
+  <button class="arrow-left" (click)="prev()"></button>
+  <p class="first-page-index">1 ...</p>
+  <p *ngIf="(offset + 3) <= userCount">{{offset + 1}} - {{offset + 3}}</p>
+  <p *ngIf="!((offset + 3) <= userCount) && !filteredUserCount">{{offset + 1}} - {{userCount}}</p>
+  <p *ngIf="!((offset + 3) <= userCount) && filteredUserCount">{{offset + 1}} - {{filteredUserCount}}</p>
+  <p class="last-page-index" *ngIf="!filteredUserCount">... {{userCount}}</p>
+  <p class="last-page-index" *ngIf="filteredUserCount">... {{filteredUserCount}}</p>
+  <button class="arrow-right" (click)="next()"></button>
+  <button class="arrow-last" (click)="lastPage()"></button>
+</div>
+<div class="user-container">
+  <div class="item-container" *ngFor="let emp of filteredUsers">
+    <button class="user" (click)="showMenu(emp)">
+      <h2 class="user-text">{{emp.name}}</h2>
+      <h2 class="user-text">{{emp.surname}}</h2>
+      <p class="user-text">{{emp.age}}</p>
+      <p class="user-text">{{emp.position}}</p>
+    </button>
+    <div [class]="'menu' + (emp.shown ? ' show-menu' : '')">
+      <button *ngIf="emp.position == 'employee'  && !hasHead" class="menu-option" (click)="promote(emp.id)">promote</button>
+      <button *ngIf="emp.position == 'head'" class="menu-option" (click)="demote(emp.id)">demote</button>
+      <button class="menu-option" (click)="editForm(emp)">edit</button>
+      <button class="menu-option" (click)="deleteConfirm(emp)">delete</button>
+      <button *ngIf="emp.banExpirationDate" class="menu-option" (click)="unblockUser(emp.id)">unblock</button>
+    </div>
+    <div [class]="'user-form delete-form' + (emp.deleteConfirm ? ' show' : '')">
+      <p>Are you sure you want to delete {{emp.name}} {{emp.surname}}</p>
+      <button (click)="deleteUser(emp.id)">delete</button>
+      <button (click)="deleteConfirm(emp)">cancel</button>
+    </div>
+    <form [class]="'user-form edit-user-form' + (emp.editForm ? ' show' : '')"
+     (ngSubmit)="editUser(emp.name)" #userForm="ngForm" ngNativeValidate>
+      <h2>Edit {{emp.name + ' ' + emp.surname}}</h2>
+      <div class="input-container">
+        <input type="text" name="name" [(ngModel)]="user.name"  placeholder="{{emp.name}}" required>
+        <input type="text" name="surname" [(ngModel)]="user.surname"  placeholder="{{emp.surname}}" required>
+        <input type="text" name="age" [(ngModel)]="user.age"  placeholder="{{emp.age}}" required>
+        <input type="text" name="ucn" [(ngModel)]="user.ucn"  placeholder="{{emp.ucn}}" required>
+        <input type="text" name="username" [(ngModel)]="user.username"  placeholder="{{emp.username}}" required>
+        <input type="text" name="password" [(ngModel)]="user.password"  placeholder="password" required>
+      </div>
+      <button>Submit</button>
+    </form>
+  </div>
+</div>

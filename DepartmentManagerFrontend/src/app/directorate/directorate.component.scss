@@ -1,0 +1,104 @@
+@import '../mixins.scss';
+
+button{
+    border: none;
+}
+
+.directorate-unblock-button{
+    @include back-button;
+    background-color: red;
+
+    .directorate-text{
+        margin: 0;
+    }
+}
+
+.directorate-logout-button{
+    @include logout-button;
+}
+
+.directorate-form{
+    @include form;
+}
+
+.director-form, .edit-directorate-form{
+    display: none;
+}
+
+.directorate-search{
+    @include search;
+}
+
+.directorate-header{
+    @include header;
+}
+
+.directorate-container{
+    @include center-container;
+
+    top: 69%;
+}
+
+.item-container{
+    @include ballmenu-container;
+}
+
+.directorate{
+    @include ball;
+    width: 250px;
+
+    .directorate-text{
+        margin: 0;
+    }
+}
+
+.menu{
+    @include menu;
+}
+
+.directorate-nav{
+    @include page-nav;
+
+    .arrow-first, .arrow-last{
+        @include arrow;
+
+        &::after{
+            background-image: url('../../assets/icons/fast-forward.svg');
+        }
+    }
+
+    .arrow-left, .arrow-right{
+        @include arrow;
+
+        &::after{
+            background-image: url('../../assets/icons/arrow.svg');
+        }
+    }
+
+    .arrow-left, .arrow-first{
+        rotate: 180deg;
+    }
+}
+
+.unblock-confirmation{
+    display: none;
+    left: unset;
+    transform: unset;
+    position: absolute;
+}
+
+.delete-form{
+    display: none;
+}
+
+.show{
+    visibility: visible;
+}
+
+.display{
+    display: grid;
+}
+
+.hidden{
+    display: none;
+}

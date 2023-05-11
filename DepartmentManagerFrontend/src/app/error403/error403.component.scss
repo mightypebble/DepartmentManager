@@ -1,0 +1,12 @@
+@import '../mixins.scss';
+
+.error-container{
+    @include ballmenu-container
+}
+
+.error-back-button{
+    @include back-button;
+
+    position: relative;
+    border: none;
+}

@@ -1,0 +1,90 @@
+@import '../mixins.scss';
+
+button{
+    border: none;
+}
+
+.department-back-button{
+    @include back-button;
+
+    .department-text{
+        margin: 0;
+    }
+}
+
+.department-logout-button{
+    @include logout-button;
+}
+
+.department-form{
+    @include form;
+}
+
+.department-search{
+    @include search;
+}
+
+.department-header{
+    @include header;
+}
+
+.department-container{
+    @include center-container;
+}
+
+.item-container{
+    @include ballmenu-container;
+}
+
+.department{
+    @include ball;
+    width: 200px;
+
+    .department-text{
+        margin: 0;
+    }
+}
+
+.menu{
+    @include menu;
+}
+
+.department-nav{
+    @include page-nav;
+
+    .arrow-first, .arrow-last{
+        @include arrow;
+
+        &::after{
+            background-image: url('../../assets/icons/fast-forward.svg');
+        }
+    }
+
+    .arrow-left, .arrow-right{
+        @include arrow;
+
+        &::after{
+            background-image: url('../../assets/icons/arrow.svg');
+        }
+    }
+
+    .arrow-left, .arrow-first{
+        rotate: 180deg;
+    }
+}
+
+.edit-department-form{
+    visibility: hidden;
+}
+
+.delete-form{
+    display: none;
+}
+
+.show{
+    visibility: visible;
+}
+
+.display{
+    display: grid;
+}

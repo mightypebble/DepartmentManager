@@ -1,0 +1,108 @@
+@import '../mixins.scss';
+
+button{
+    border: none;
+}
+
+.user-back-button{
+    @include back-button;
+
+    .user-text{
+        margin: 0;
+    }
+}
+
+.user-logout-button{
+    @include logout-button;
+}
+
+.user-form{
+    @include form;
+
+    width: 295px;
+
+    .input-container{
+        display: grid;
+        grid-template-columns: 45% 45%;
+        justify-content: space-around
+    }
+
+    select{
+        width: 150px;
+        left: 50%;
+        position: relative;
+        transform: translate(-50%);
+    }
+}
+
+.user-search{
+    @include search;
+}
+
+.user-header{
+    @include header;
+}
+
+.user-container{
+    @include center-container;
+
+    top: 70%;
+}
+
+.item-container{
+    @include ballmenu-container;
+}
+
+.user{
+    @include ball;
+
+    .user-text{
+        margin: 0;
+    }
+}
+
+.menu{
+    @include menu;
+
+    grid-template-columns: auto auto;
+}
+
+.user-nav{
+    @include page-nav;
+
+    .arrow-first, .arrow-last{
+        @include arrow;
+
+        &::after{
+            background-image: url('../../assets/icons/fast-forward.svg');
+        }
+    }
+
+    .arrow-left, .arrow-right{
+        @include arrow;
+
+        &::after{
+            background-image: url('../../assets/icons/arrow.svg');
+        }
+    }
+
+    .arrow-left, .arrow-first{
+        rotate: 180deg;
+    }
+}
+
+.edit-user-form{
+    display: none;
+}
+
+.delete-form{
+    display: none;
+}
+
+.show{
+    display: grid;
+}
+
+.show-menu{
+    visibility: visible;
+}
