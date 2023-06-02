@@ -1,4 +1,7 @@
-import { Component } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Component, ElementRef } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { LoginService } from './login.service';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +10,9 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'my_app';
+  
+  constructor(private http: HttpClient, private _elementRef: ElementRef,
+    private route: ActivatedRoute,
+    private router: Router, private loginService: LoginService) {
+  }
 }

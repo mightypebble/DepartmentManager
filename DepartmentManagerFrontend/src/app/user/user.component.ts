@@ -66,7 +66,7 @@ export class UserComponent {
       this.lastTerm = term;
       this.lastLength = length;
       this.filteredUsers = data;
-      this.userService.search(term, this.offset + 3, this.department).subscribe(data => {
+      this.userService.search(term, this.offset + 10, this.department).subscribe(data => {
         if (!data.length) {
           this._elementRef.nativeElement.querySelector('.arrow-right').style.visibility = 'hidden';
           this._elementRef.nativeElement.querySelector('.arrow-last').style.visibility = 'hidden';
@@ -93,7 +93,7 @@ export class UserComponent {
       this.userAreFiltered = false;
       this.filteredUserCount = 0;
     }
-    if (this.offset < 3) {
+    if (this.offset < 10) {
       this._elementRef.nativeElement.querySelector('.arrow-left').style.visibility = 'hidden';
       this._elementRef.nativeElement.querySelector('.arrow-first').style.visibility = 'hidden';
       this._elementRef.nativeElement.querySelector('.first-page-index').style.visibility = 'hidden';
@@ -105,13 +105,13 @@ export class UserComponent {
   }
 
   next() {
-    this.offset += 3;
+    this.offset += 10;
     if (!this.userAreFiltered) this.ngOnInit();
     else this.search(this.lastTerm, this.lastLength);
   }
 
   prev() {
-    this.offset -= 3;
+    this.offset -= 10;
     if (!this.userAreFiltered) this.ngOnInit();
     else this.search(this.lastTerm, this.lastLength);
   }
@@ -124,13 +124,13 @@ export class UserComponent {
 
   lastPage() {
     if (!this.userAreFiltered) {
-      if (this.userCount % 3 == 0) this.offset = (Math.floor((this.userCount - 1) / 3) * 3);
-      else this.offset = (Math.floor(this.userCount / 3) * 3)
+      if (this.userCount % 10 == 0) this.offset = (Math.floor((this.userCount - 1) / 10) * 10);
+      else this.offset = (Math.floor(this.userCount / 10) * 10)
       this.ngOnInit()
     }
     else {
-      if (this.filteredUserCount % 3 == 0) this.offset = (Math.floor((this.filteredUserCount - 1) / 3) * 3)
-      else this.offset = (Math.floor(this.filteredUserCount / 3) * 3)
+      if (this.filteredUserCount % 10 == 0) this.offset = (Math.floor((this.filteredUserCount - 1) / 10) * 10)
+      else this.offset = (Math.floor(this.filteredUserCount / 10) * 10)
       this.search(this.lastTerm, this.lastLength);
     }
   }
@@ -159,11 +159,6 @@ export class UserComponent {
     this.router.navigate([`directorate/${this.directorate}`]);
   }
 
-  logout() {
-    this.loginService.deleteToken();
-    this.router.navigate(['/login']);
-  }
-
   showMenu(user: User) {
     user.shown = !user.shown;
   }
@@ -176,13 +171,26 @@ export class UserComponent {
     user.deleteConfirm = !user.deleteConfirm;
   }
 
+  openAddForm() {
+    this._elementRef.nativeElement.querySelector('.form-button').classList.remove('form-button--inactive');
+    this._elementRef.nativeElement.querySelector('.form-button').classList.add('form-button--active');
+  }
+
   ngOnInit() {
+    this._elementRef.nativeElement.addEventListener('click', (e: any) => {
+      if (!this._elementRef.nativeElement.querySelector('.user-form').contains(e.target) &&
+      !this._elementRef.nativeElement.querySelector('.form-button').contains(e.target) &&
+      this._elementRef.nativeElement.querySelector('.form-button').classList.contains('form-button--active')) {
+        this._elementRef.nativeElement.querySelector('.form-button').classList.remove('form-button--active');
+        this._elementRef.nativeElement.querySelector('.form-button').classList.add('form-button--inactive');
+      }
+    });
     if (!this.userCount) {
       this.userService.getUserCount(this.department).subscribe((data: any) => {
         this.userCount = data;
       })
     }
-    this.userService.findAll(this.directorate, this.department, this.offset + 3).subscribe(data => {
+    this.userService.findAll(this.directorate, this.department, this.offset + 10).subscribe(data => {
       if (!data.length) {
         this._elementRef.nativeElement.querySelector('.arrow-right').style.visibility = 'hidden';
         this._elementRef.nativeElement.querySelector('.arrow-last').style.visibility = 'hidden';
@@ -198,7 +206,7 @@ export class UserComponent {
       this.users = data;
       if (this.users.length && this.users[0].position == 'head') this.hasHead = true;
       this.filteredUsers = this.users;
-      if (this.offset < 3) {
+      if (this.offset < 10) {
         this._elementRef.nativeElement.querySelector('.arrow-left').style.visibility = 'hidden';
         this._elementRef.nativeElement.querySelector('.arrow-first').style.visibility = 'hidden';
         this._elementRef.nativeElement.querySelector('.first-page-index').style.visibility = 'hidden';

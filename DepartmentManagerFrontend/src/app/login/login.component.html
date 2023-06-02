@@ -1,7 +1,9 @@
 <form class="login-form" (ngSubmit)="login()" #loginForm="ngForm" ngNativeValidate>
   <h2>Please log in</h2>
-  <input type="text" name="username" [(ngModel)]="user.username"  placeholder="username" required>
-  <input type="password" name="password" [(ngModel)]="user.password" placeholder="password" required>
+  <div class="input-container">
+    <input type="text" name="username" [(ngModel)]="user.username"  placeholder="username" required>
+    <input type="password" name="password" [(ngModel)]="user.password" placeholder="password" required>
+  </div>
   <button>Login</button>
   <p *ngIf="authError">Wrong Username or Password combination</p>
   <p *ngIf="this.status == 'temp'">Too many failed attempts. Please try again later!</p>

@@ -15,7 +15,7 @@ import com.example.myapp.entities.User;
 public interface UserRepository extends JpaRepository<User, Long> {
 
 	@Query(value = "SELECT * FROM users WHERE department = :dep ORDER BY"
-			+ " position DESC, user_id DESC LIMIT 3 OFFSET :offset", nativeQuery = true)
+			+ " position DESC, user_id DESC LIMIT 10 OFFSET :offset", nativeQuery = true)
     List<User> find3(
     		@Param("offset") int offset,
     		@Param("dep") Long id
@@ -23,7 +23,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 	
 	@Query(value = "SELECT * FROM users WHERE department = :dep AND name LIKE CONCAT(:keyword,'%')"
 			+ " OR department = :dep AND surname LIKE CONCAT(:keyword,'%')"
-			+ " ORDER BY user_id DESC LIMIT 3 OFFSET :offset", nativeQuery = true)
+			+ " ORDER BY user_id DESC LIMIT 10 OFFSET :offset", nativeQuery = true)
 	List<User> searchUsers(
 			@Param("keyword") String keyword,
 			@Param("offset") int offset,

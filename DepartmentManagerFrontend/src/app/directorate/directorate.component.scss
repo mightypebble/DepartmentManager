@@ -4,29 +4,32 @@ button{
     border: none;
 }
 
-.directorate-unblock-button{
-    @include back-button;
-    background-color: red;
-
-    .directorate-text{
-        margin: 0;
-    }
-}
-
-.directorate-logout-button{
-    @include logout-button;
-}
-
 .directorate-form{
     @include form;
 }
 
-.director-form, .edit-directorate-form{
-    display: none;
+.addition-form{
+    @include addition-form;
 }
 
-.directorate-search{
-    @include search;
+.addition-form-container{
+    @include addition-form-container;
+}
+
+.form-button{
+    @include form-button;
+}
+
+.form-button--active{
+    @include form-animation--active;
+}
+
+.form-button--inactive{
+    @include form-animation--inactive;
+}
+
+.director-form, .edit-directorate-form{
+    display: none;
 }
 
 .directorate-header{
@@ -91,8 +94,8 @@ button{
     display: none;
 }
 
-.show{
-    visibility: visible;
+.display-flex{
+    display: flex;
 }
 
 .display{
@@ -101,4 +104,8 @@ button{
 
 .hidden{
     display: none;
+}
+
+.input-container{
+    @include input-container;
 }

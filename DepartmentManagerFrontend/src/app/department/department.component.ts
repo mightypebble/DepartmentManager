@@ -54,7 +54,7 @@ export class DepartmentComponent {
       this.lastTerm = term;
       this.lastLength = length;
       this.filteredDepartments = data;
-      this.departmentService.search(term, this.offset + 3).subscribe(data => {
+      this.departmentService.search(term, this.offset + 10).subscribe(data => {
         if (!data.length) {
           this._elementRef.nativeElement.querySelector('.arrow-right').style.visibility = 'hidden';
           this._elementRef.nativeElement.querySelector('.arrow-last').style.visibility = 'hidden';
@@ -86,7 +86,7 @@ export class DepartmentComponent {
       this.departmentsAreFiltered = false;
       this.filteredDepartmentCount = 0;
     }
-    if (this.offset < 3) {
+    if (this.offset < 10) {
       this._elementRef.nativeElement.querySelector('.arrow-left').style.visibility = 'hidden';
       this._elementRef.nativeElement.querySelector('.arrow-first').style.visibility = 'hidden';
       this._elementRef.nativeElement.querySelector('.first-page-index').style.visibility = 'hidden';
@@ -98,13 +98,13 @@ export class DepartmentComponent {
   }
 
   next() {
-    this.offset += 3;
+    this.offset += 10;
     if (!this.departmentsAreFiltered) this.ngOnInit();
     else this.search(this.lastTerm, this.lastLength);
   }
 
   prev() {
-    this.offset -= 3;
+    this.offset -= 10;
     if (!this.departmentsAreFiltered) this.ngOnInit();
     else this.search(this.lastTerm, this.lastLength);
   }
@@ -117,13 +117,13 @@ export class DepartmentComponent {
 
   lastPage() {
     if (!this.departmentsAreFiltered) {
-      if (this.departmentCount%3 == 0) this.offset = (Math.floor((this.departmentCount - 1) / 3) * 3);
-      else this.offset = (Math.floor(this.departmentCount / 3) * 3)
+      if (this.departmentCount%10 == 0) this.offset = (Math.floor((this.departmentCount - 1) / 10) * 10);
+      else this.offset = (Math.floor(this.departmentCount / 10) * 10)
       this.ngOnInit()
     }
     else {
-      if (this.filteredDepartmentCount%3 == 0) this.offset = (Math.floor((this.filteredDepartmentCount - 1) / 3) * 3)
-      else this.offset = (Math.floor(this.filteredDepartmentCount / 3) * 3)
+      if (this.filteredDepartmentCount%10 == 0) this.offset = (Math.floor((this.filteredDepartmentCount - 1) / 10) * 10)
+      else this.offset = (Math.floor(this.filteredDepartmentCount / 10) * 10)
       this.search(this.lastTerm, this.lastLength);
     }
   }
@@ -138,11 +138,6 @@ export class DepartmentComponent {
 
   back() {
     this.router.navigate(['/']);
-  }
-
-  logout() {
-    this.loginService.deleteToken();
-    this.router.navigate(['/login']);
   }
 
   showMenu(dep: Department) {
@@ -161,13 +156,26 @@ export class DepartmentComponent {
     this.router.navigate([`directorate/${this.directorate}/department/${name}`]);
   }
 
+  openAddForm() {
+    this._elementRef.nativeElement.querySelector('.form-button').classList.remove('form-button--inactive');
+    this._elementRef.nativeElement.querySelector('.form-button').classList.add('form-button--active');
+  }
+
   ngOnInit() {
+    this._elementRef.nativeElement.addEventListener('click', (e: any) => {
+      if (!this._elementRef.nativeElement.querySelector('.department-form').contains(e.target) &&
+      !this._elementRef.nativeElement.querySelector('.form-button').contains(e.target) &&
+      this._elementRef.nativeElement.querySelector('.form-button').classList.contains('form-button--active')) {
+        this._elementRef.nativeElement.querySelector('.form-button').classList.remove('form-button--active');
+        this._elementRef.nativeElement.querySelector('.form-button').classList.add('form-button--inactive');
+      }
+    });
     if (!this.departmentCount) {
       this.departmentService.getDepartmentCount(this.directorate).subscribe((data: any) => {
         this.departmentCount = data;
       });
     }
-    this.departmentService.findAll(this.directorate, this.offset + 3).subscribe(data => {
+    this.departmentService.findAll(this.directorate, this.offset + 10).subscribe(data => {
       if (!data.length) {
         this._elementRef.nativeElement.querySelector('.arrow-right').style.visibility = 'hidden';
         this._elementRef.nativeElement.querySelector('.arrow-last').style.visibility = 'hidden';
@@ -187,7 +195,7 @@ export class DepartmentComponent {
           if (employee.position == 'head') dep.head = employee;
         });
       });
-      if (this.offset < 3) {
+      if (this.offset < 10) {
         this._elementRef.nativeElement.querySelector('.arrow-left').style.visibility = 'hidden';
         this._elementRef.nativeElement.querySelector('.arrow-first').style.visibility = 'hidden';
         this._elementRef.nativeElement.querySelector('.first-page-index').style.visibility = 'hidden';

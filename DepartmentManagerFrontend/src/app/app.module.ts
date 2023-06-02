@@ -12,6 +12,7 @@ import { UserComponent } from './user/user.component';
 import { LoginComponent } from './login/login.component';
 import { Error401Component } from './error403/error403.component';
 import { JwtInterceptor } from './jwt.interceptor';
+import { NavbarComponent } from './navbar/navbar.component';
 
 export function tokenGetter() {
   return localStorage.getItem('access_token');
@@ -24,7 +25,8 @@ export function tokenGetter() {
     DepartmentComponent,
     UserComponent,
     LoginComponent,
-    Error401Component
+    Error401Component,
+    NavbarComponent
   ],
   imports: [
     BrowserModule,

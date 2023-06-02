@@ -1,81 +1,89 @@
-<h2>Welcome, {{name}}</h2>
-<button class="directorate-unblock-button" (click)="toggleUnblockConfirm()"><h3>UNBLOCK ALL IPs</h3></button>
-<button class="directorate-logout-button" (click)="logout()"><h3>LOGOUT</h3></button>
-<div class="directorate-form unblock-confirmation">
-  <p>Are you sure you want to clear all blocked users wait time?</p>
-  <button (click)="unblock()">Yes</button>
-  <button (click)="toggleUnblockConfirm()">No</button>
-</div>
-<form class="directorate-form" (ngSubmit)="onSubmit()" #directorateForm="ngForm" ngNativeValidate>
-  <h2>Add Directorate</h2>
-  <input type="text" name="name" [(ngModel)]="directorate.name"  placeholder="name" required>
-  <input type="text" name="description" [(ngModel)]="directorate.description" placeholder="description" required>
-  <p *ngIf="nameError">
-    This directorate already exists
-  </p>
-  <button>Add</button>
-</form>
-<h1 class="directorate-header">Directorates</h1>
-<input class="directorate-search" #searchBox type="text" (keyup.enter)="search(searchBox.value, searchBox.value.length)" placeholder="Search by name">
-<div class="directorate-nav">
-  <button class="arrow-first" (click)="firstPage()"></button>
-  <button class="arrow-left" (click)="prev()"></button>
-  <p class="first-page-index">1 ...</p>
-  <p *ngIf="(offset + 3) <= directorateCount">{{offset + 1}} - {{offset + 3}}</p>
-  <p *ngIf="!((offset + 3) <= directorateCount) && !filteredDirectorateCount">{{offset + 1}} - {{directorateCount}}</p>
-  <p *ngIf="!((offset + 3) <= directorateCount) && filteredDirectorateCount">{{offset + 1}} - {{filteredDirectorateCount}}</p>
-  <p class="last-page-index" *ngIf="!filteredDirectorateCount">... {{directorateCount}}</p>
-  <p class="last-page-index" *ngIf="filteredDirectorateCount">... {{filteredDirectorateCount}}</p>
-  <button class="arrow-right" (click)="next()"></button>
-  <button class="arrow-last" (click)="lastPage()"></button>
-</div>
-<div class="directorate-container">
-  <div class="item-container" *ngFor="let dir of filteredDirectorates">
-    <button class="directorate" (click)="showMenu(dir)">
-      <h2 class="directorate-text">{{dir.name}}</h2>
-      <p *ngIf="dir.director" class="directorate-text">{{dir.director.name + " " + dir.director.surname}}</p>
-      <p *ngIf="!dir.director" class="directorate-text">[undirected]</p>
-      <p class="directorate-text">{{dir.description}}</p>
-    </button>
-    <div [class]="'menu' + (dir.shown ? ' show' : '')">
-      <button class="menu-option open" (click)="openDir(dir.name)">open</button>
-      <button *ngIf="!dir.director" class="menu-option" (click)="dirForm(dir)">add director</button>
-      <button *ngIf="dir.director" class="menu-option" (click)="fireDirector(dir.name, dir.director.id)">fire director</button>
-      <button *ngIf="dir.director && dir.director.banExpirationDate" class="menu-option" 
-      (click)="unblockDirector(dir.director.id)">
-        unblock director
-      </button>
-      <button class="menu-option" (click)="editForm(dir)">edit</button>
-      <button class="menu-option" (click)="deleteConfirm(dir)">delete</button>
-    </div>
-    <div [class]="'directorate-form delete-form' + (dir.deleteConfirm ? ' display' : '')">
-      <p>Are you sure you want to delete {{dir.name}}</p>
-      <button (click)="deleteDirectorate(dir.id)">delete</button>
-      <button (click)="deleteConfirm(dir)">cancel</button>
-    </div>
-    <form [class]="'directorate-form director-form' + (dir.dirForm ? ' display' : '')"
-     (ngSubmit)="submitDirector()" #directorForm="ngForm" ngNativeValidate>
-      <h2>Add Director</h2>
-      <div class="input-container">
-        <input type="text" name="name" [(ngModel)]="director.name"  placeholder="name" required>
-        <input type="text" name="surname" [(ngModel)]="director.surname"  placeholder="surname" required>
-        <input type="text" name="age" [(ngModel)]="director.age"  placeholder="age" required>
-        <input type="text" name="ucn" [(ngModel)]="director.ucn"  placeholder="UCN" required>
-        <input type="text" name="username" [(ngModel)]="director.username"  placeholder="username" required>
-        <input type="text" name="password" [(ngModel)]="director.password"  placeholder="password" required>
-      </div>
-      <p *ngIf="passwordError">
-        Password needs to be at least 8 characters long with 
-        at lease 1 upper case, 1 lower case, 1 number and 1 special symbol characters
-      </p>
-      <button>Add</button>
-    </form>
-    <form [class]="'directorate-form edit-directorate-form' + (dir.editForm ? ' display' : '')"
-     (ngSubmit)="editDirectorate(dir.name)" #directorateForm="ngForm" ngNativeValidate>
-      <h2>Edit {{dir.name}}</h2>
+<app-navbar></app-navbar>
+<div class="addition-form-container">
+  <button class="form-button" (click)="openAddForm()">
+    <p>+</p>
+  </button>
+  <form class="directorate-form addition-form" (ngSubmit)="onSubmit()" #directorateForm="ngForm" ngNativeValidate>
+    <h2>Add Directorate</h2>
+    <div class="input-container">
       <input type="text" name="name" [(ngModel)]="directorate.name"  placeholder="name" required>
       <input type="text" name="description" [(ngModel)]="directorate.description" placeholder="description" required>
-      <button>Submit</button>
-    </form>
+    </div>
+    <p *ngIf="nameError">
+      This directorate already exists
+    </p>
+    <button>Add</button>
+  </form>
+</div>
+<div class="directorate-container">
+  <table>
+    <tr>
+      <th>Name</th>
+      <th>Director</th>
+      <th>Description</th>
+    </tr>
+    <div *ngFor="let dir of filteredDirectorates">
+      <tr class="test" (click)="showMenu(dir)">
+        <td><h2 class="directorate-text">{{dir.name}}</h2></td>
+        <td *ngIf="dir.director"><p  class="directorate-text">{{dir.director.name + " " + dir.director.surname}}</p></td>
+        <td *ngIf="!dir.director"><p class="directorate-text">[undirected]</p></td>
+        <td><p class="directorate-text">{{dir.description}}</p></td>
+      </tr>
+      <div [class]="'menu' + (dir.shown ? ' display-flex' : '')">
+        <button class="menu-option open" (click)="openDir(dir.name)">open</button>
+        <button *ngIf="!dir.director" class="menu-option" (click)="dirForm(dir)">add director</button>
+        <button *ngIf="dir.director" class="menu-option" (click)="fireDirector(dir.name, dir.director.id)">fire director</button>
+        <button *ngIf="dir.director && dir.director.banExpirationDate" class="menu-option" 
+        (click)="unblockDirector(dir.director.id)">
+          unblock director
+        </button>
+        <button class="menu-option" (click)="editForm(dir)">edit</button>
+        <button class="menu-option" (click)="deleteConfirm(dir)">delete</button>
+      </div>
+      <div [class]="'directorate-form delete-form' + (dir.deleteConfirm ? ' display' : '')">
+        <p>Are you sure you want to delete {{dir.name}}</p>
+        <button (click)="deleteDirectorate(dir.id)">delete</button>
+        <button (click)="deleteConfirm(dir)">cancel</button>
+      </div>
+      <form [class]="'directorate-form director-form' + (dir.dirForm ? ' display' : '')"
+       (ngSubmit)="submitDirector()" #directorForm="ngForm" ngNativeValidate>
+        <h2>Add Director</h2>
+        <div class="input-container">
+          <input type="text" name="name" [(ngModel)]="director.name"  placeholder="name" required>
+          <input type="text" name="surname" [(ngModel)]="director.surname"  placeholder="surname" required>
+          <input type="text" name="age" [(ngModel)]="director.age"  placeholder="age" required>
+          <input type="text" name="ucn" [(ngModel)]="director.ucn"  placeholder="UCN" required>
+          <input type="text" name="username" [(ngModel)]="director.username"  placeholder="username" required>
+          <input type="text" name="password" [(ngModel)]="director.password"  placeholder="password" required>
+        </div>
+        <p *ngIf="passwordError">
+          Password needs to be at least 8 characters long with 
+          at lease 1 upper case, 1 lower case, 1 number and 1 special symbol characters
+        </p>
+        <button>Add</button>
+      </form>
+      <form [class]="'directorate-form edit-directorate-form' + (dir.editForm ? ' display' : '')"
+       (ngSubmit)="editDirectorate(dir.name)" #directorateForm="ngForm" ngNativeValidate>
+        <h2>Edit {{dir.name}}</h2>
+        <div class="input-container">
+          <input type="text" name="name" [(ngModel)]="directorate.name"  placeholder="name" required>
+          <input type="text" name="description" [(ngModel)]="directorate.description" placeholder="description" required>
+        </div>
+        <button>Submit</button>
+      </form>
+    </div>
+  </table>
+  <div class="directorate-nav">
+    <button class="arrow-first" (click)="firstPage()"></button>
+    <button class="arrow-left" (click)="prev()"></button>
+    <p class="first-page-index">1 ...</p>
+    <p *ngIf="(offset + 10) <= directorateCount && !filteredDirectorateCount">{{offset + 1}} - {{offset + 10}}</p>
+    <p *ngIf="(offset + 10) <= filteredDirectorateCount && filteredDirectorateCount">{{offset + 1}} - {{offset + 10}}</p>
+    <p *ngIf="!((offset + 10) <= directorateCount) && !filteredDirectorateCount">{{offset + 1}} - {{directorateCount}}</p>
+    <p *ngIf="!((offset + 10) <= filteredDirectorateCount) && filteredDirectorateCount">{{offset + 1}} - {{filteredDirectorateCount}}</p>
+    <p class="last-page-index" *ngIf="!filteredDirectorateCount">... {{directorateCount}}</p>
+    <p class="last-page-index" *ngIf="filteredDirectorateCount">... {{filteredDirectorateCount}}</p>
+    <button class="arrow-right" (click)="next()"></button>
+    <button class="arrow-last" (click)="lastPage()"></button>
   </div>
 </div>

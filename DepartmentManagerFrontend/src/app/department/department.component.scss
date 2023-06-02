@@ -12,16 +12,28 @@ button{
     }
 }
 
-.department-logout-button{
-    @include logout-button;
-}
-
 .department-form{
     @include form;
 }
 
-.department-search{
-    @include search;
+.addition-form{
+    @include addition-form;
+}
+
+.addition-form-container{
+    @include addition-form-container;
+}
+
+.form-button{
+    @include form-button;
+}
+
+.form-button--active{
+    @include form-animation--active;
+}
+
+.form-button--inactive{
+    @include form-animation--inactive;
 }
 
 .department-header{
@@ -34,6 +46,10 @@ button{
 
 .item-container{
     @include ballmenu-container;
+}
+
+.input-container{
+    @include input-container;
 }
 
 .department{
@@ -74,7 +90,7 @@ button{
 }
 
 .edit-department-form{
-    visibility: hidden;
+    display: none;
 }
 
 .delete-form{
@@ -87,4 +103,8 @@ button{
 
 .display{
     display: grid;
+}
+
+.display-flex{
+    display: flex;
 }

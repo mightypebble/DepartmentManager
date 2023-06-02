@@ -13,17 +13,17 @@ import com.example.myapp.entities.User;
 @Repository
 public interface DirectorateRepository extends JpaRepository<Directorate, Long> {
 
-	@Query(value = "SELECT * FROM Directorate ORDER BY id DESC LIMIT 3 OFFSET :offset", nativeQuery = true)
+	@Query(value = "SELECT * FROM Directorate ORDER BY id DESC LIMIT 10 OFFSET :offset", nativeQuery = true)
     List<Directorate> find3(@Param("offset") int offset);
 	
 	@Query(value = "SELECT * FROM Directorate WHERE name LIKE CONCAT('%',:keyword,'%')"
-			+ " ORDER BY id DESC LIMIT 3 OFFSET :offset", nativeQuery = true)
+			+ " ORDER BY id DESC LIMIT 10 OFFSET :offset", nativeQuery = true)
 	List<Directorate> searchDirectorates(@Param("keyword") String keyword, @Param("offset") int offset);
     
 	@Query(value = "SELECT COUNT(DISTINCT id) FROM Directorate", nativeQuery = true)
 	int getDirectorateCount();
 	
-	@Query(value = "SELECT COUNT(DISTINCT id) FROM Directorate WHERE name LIKE CONCAT(:keyword,'%')", nativeQuery = true)
+	@Query(value = "SELECT COUNT(DISTINCT id) FROM Directorate WHERE name LIKE CONCAT('%',:keyword,'%')", nativeQuery = true)
 	int getFilteredDirectorateCount(
 			@Param("keyword") String keyword
 			);

@@ -12,31 +12,28 @@ button{
     }
 }
 
-.user-logout-button{
-    @include logout-button;
-}
-
 .user-form{
     @include form;
-
-    width: 295px;
-
-    .input-container{
-        display: grid;
-        grid-template-columns: 45% 45%;
-        justify-content: space-around
-    }
-
-    select{
-        width: 150px;
-        left: 50%;
-        position: relative;
-        transform: translate(-50%);
-    }
 }
 
-.user-search{
-    @include search;
+.addition-form{
+    @include addition-form;
+}
+
+.addition-form-container{
+    @include addition-form-container;
+}
+
+.form-button{
+    @include form-button;
+}
+
+.form-button--active{
+    @include form-animation--active;
+}
+
+.form-button--inactive{
+    @include form-animation--inactive;
 }
 
 .user-header{
@@ -45,12 +42,14 @@ button{
 
 .user-container{
     @include center-container;
-
-    top: 70%;
 }
 
 .item-container{
     @include ballmenu-container;
+}
+
+.input-container{
+    @include input-container;
 }
 
 .user{
@@ -104,5 +103,5 @@ button{
 }
 
 .show-menu{
-    visibility: visible;
+    display: flex;
 }

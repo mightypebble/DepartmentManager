@@ -1,3 +1,6 @@
+@import '../src/app/variables.scss';
+
 body{
-    background-color:cadetblue ;
+    background-color:$theme-color-secondary;
+    font-family: $theme-font-base;
 }

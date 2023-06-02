@@ -1,0 +1,24 @@
+<nav class="navbar">
+    <h3 class="navbar-user">Welcome, {{user}}</h3>
+    <h2>{{page}}</h2>
+    <div class="navbar-menu">
+        <button class="navbar-button navbar-button--search" (click)="togglePanel('search')"></button>
+        <button class="navbar-button navbar-button--unblock" *ngIf="checkRoute()" (click)="togglePanel('unblock')">UNBLOCK</button>
+        <button class="navbar-button navbar-button--logout" (click)="togglePanel('logout')">log out</button>
+    </div>
+</nav>
+<div class="navbar-panel navbar-panel--logout">
+    <p>are you sure you want to log out?</p>
+    <button class="navbar-button" (click)="logout()">yes</button>
+    <button class="navbar-button" (click)="togglePanel('logout')">no</button>
+</div>
+<div class="navbar-panel navbar-panel--unblock">
+    <p>confirm unblocking of all IPs</p>
+    <button class="navbar-button" (click)="unblock()">confirm</button>
+    <button class="navbar-button" (click)="togglePanel('unblock')">cancel</button>
+</div>
+<div class="navbar-panel navbar-panel--search">
+    <button class="navbar-button" (click)="togglePanel('search'); search(searchBox.value, 0); clearSearch(searchBox)">cancel</button>
+    <input class="navbar-search" #searchBox type="text" placeholder="Search by name">
+    <button class="navbar-button" (click)="search(searchBox.value, searchBox.value.length)">search</button>
+</div>

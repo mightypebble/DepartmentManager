@@ -1,75 +1,141 @@
-@mixin back-button{
-    display: grid;
-    align-content: space-evenly;
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    background-color: yellowgreen;
-    text-align: center;
-    margin: 50px;
-    position: absolute;
-    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-}
+@import '../app/variables.scss';
 
-@mixin logout-button{
-    display: grid;
-    align-content: space-evenly;
+@mixin back-button{
+    @include hover-animation;
+
     width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    background-color: yellowgreen;
+    height: 50px;
+    background-color: $theme-color-primary;
     text-align: center;
-    margin: 50px;
-    right: 0;
     position: absolute;
-    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    top: 8px;
+    box-shadow: $theme-box-shadow;
 }
 
 @mixin form{
-    width: 200px;
-    left: 50%;
-    transform: translate(-50%);
+    background-color: $theme-color-primary;
+    box-shadow: $theme-box-shadow;
     position: relative;
-    display: grid;
-    row-gap: 10px;
     text-align: center;
-    background-color: yellowgreen;
-    padding: 10px;
-    border-radius: 10%;
-    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    padding: 10px 0;
 
     button{
-        width: min-content;
-        display: flex;
+        @include hover-animation;
+
+        background-color: $theme-color-primary;
+        border: none;
+        box-shadow: $theme-box-shadow-inset;
+        width: 50%;
         justify-self: center;
+        height: 40px;
+        margin: 10px 0;
     }
 }
 
-@mixin search{
-    position: relative;
+@mixin addition-form{
+    @include form;
+
+    opacity: 0;
+    pointer-events: none;
+}
+
+@mixin addition-form-container{
+    max-width: 500px;
     left: 50%;
     transform: translate(-50%);
-    background-color: white;
-    padding: 10px;
-    border: 6px yellowgreen solid;
-    border-radius: 10%;
-    width: 200px;
+    margin: 0 55px 70px;
+    position: relative;
 
-    &:focus-visible {
-        outline: none;
+    select{
+        height: 30px;
+        background-color: $theme-color-primary;
+        border: none;
+        box-shadow: $theme-box-shadow-inset;
+        padding-left: 10px;
+        display: block;
+        left: 50%;
+        transform: translate(-50%);
+        position: relative;
+        width: 150px;
+
+        &:focus-visible{
+            outline: none;
+        }
+    }
+}
+
+@mixin form-button{
+    background-color: $theme-color-primary;
+    border-radius: 50%;
+    box-shadow: $theme-box-shadow;
+    width: 100px;
+    height: 100px;
+    left: 50%;
+    top: 50%;
+    transition: 1.5s;
+    transform: translate(-50%, -50%);
+    position: absolute;
+    z-index: 1;
+
+    p{
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        margin: 0;
+        font-size: xxx-large;
+    }
+
+    &:hover {
+        background-color: rgb(196, 250, 115);
+        box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     }
 }
 
 @mixin header{
+    @include hover-animation;
+
     font-size: 40px;
     text-align: center;
+    width: min-content;
+    padding: 0 10px;
+    height: 50px;
+    background-color: $theme-color-primary;
+    text-align: center;
+    box-shadow: $theme-box-shadow;
 }
 
 @mixin center-container{
     position: relative;
-    display: flex;
-    justify-content: space-evenly;
-    margin-top: 20px;
+    left: 50%;
+    transform: translate(-50%);
+    margin: 0 55px 70px;
+    max-width: 1000px;
+
+    table{
+        width: 100%;
+    }
+    
+    tr{
+        @include hover-animation;
+        
+        user-select: none;
+        background-color: lightgray;
+        box-shadow: $theme-box-shadow;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 50px;
+        left: 50%;
+        padding: 0 20px;
+        position: relative;
+        transform: translate(-50%);
+    
+        td, th{
+            width: 100%;
+            text-align: center;
+        }
+    }
 }
 
 @mixin ballmenu-container{
@@ -80,27 +146,47 @@
 }
 
 @mixin ball{
-    display: grid;
-    align-content: space-evenly;
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    background-color: yellowgreen;
+    @include hover-animation;
+
+    display: flex;
+    align-items: center;
+    max-width: 1000px;
+    height: 40px;
+    background-color: $theme-color-primary;
     text-align: center;
-    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    box-shadow: $theme-box-shadow;
 }
 
 @mixin menu{
-    visibility: hidden;
-    display: grid;
-    grid-template-columns: auto auto auto;
-    row-gap: 6px;
+    display: none;
+    justify-content: space-between;
 
     .menu-option{
-        background-color: yellowgreen;
-        margin: 0 5px;
-        padding: 5px;
-        width: 60px;
+        @include hover-animation;
+        background-color: $theme-color-primary;
+        padding: 15px 0;
+        width: 100%;
+    }
+}
+
+@mixin input-container{
+    display: grid;
+    grid-template-columns: auto auto;
+    padding: 0 30px;
+    display: grid;
+    grid-template-columns: 45% 45%;
+    justify-content: space-around;
+
+    input{
+        height: 30px;
+        background-color: $theme-color-primary;
+        border: none;
+        box-shadow: $theme-box-shadow-inset;
+        padding-left: 10px;
+
+        &:focus-visible{
+            outline: none;
+        }
     }
 }
 
@@ -118,7 +204,7 @@
 @mixin arrow{
     position: relative;
     display: block;
-    background-color: cadetblue;
+    background-color: transparent;
 
     &::after{
         content: '';
@@ -129,4 +215,178 @@
         width: 35px;
         height: 35px;
     }
+}
+
+@mixin hover-animation{
+    @keyframes hover {
+        from {
+            background-color: $theme-color-primary;
+        }
+        50%{
+            z-index: 1;
+            box-shadow: rgba(0, 0, 0, 0.105) 0px 2px 5px;
+        }
+        to {
+            background-color: $theme-color-hover;
+            box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+            z-index: 1;
+        }
+    }
+
+    @keyframes unhover {
+        from {
+            background-color: $theme-color-hover;
+            box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+        }
+        to {
+            background-color: $theme-color-primary;
+        }
+    }
+
+    &:hover{
+        animation: hover 1.5s forwards
+    }
+
+    animation: unhover 1s;
+}
+
+@mixin form-animation--active{
+    @keyframes form-button {
+        from{
+            border-radius: 50%;
+            width: 100px;
+            height: 100px;
+            z-index: 100;
+        }
+        10%{
+            width: 90px;
+            height: 90px;
+            opacity: 1;
+        }
+        to{
+            border-radius: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            z-index: 0;
+        }
+    }
+
+    @keyframes show-form {
+        30%{
+            opacity: 0;
+            background-color: $theme-color-secondary;
+        }
+        to{
+            background-color: $theme-color-primary;
+            opacity: 1;
+            pointer-events: all;
+        }
+    }
+
+    animation: form-button 1.5s forwards;
+
+    & ~ .addition-form{
+        animation: show-form 2.5s forwards;
+    }
+}
+
+@mixin form-animation--inactive{
+    @keyframes unform-button {
+        from{
+            border-radius: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            z-index: 0;
+        }
+        to{
+            border-radius: 50%;
+            width: 100px;
+            height: 100px;
+            z-index: 100;
+        }
+    }
+
+    @keyframes hide-form {
+        from{
+            opacity: 1;
+            background-color: $theme-color-primary;
+        }
+        to{
+            background-color: $theme-color-secondary;
+            opacity: 0;
+            pointer-events: none;
+        }
+    }
+
+    animation: unform-button 1.5s forwards;
+
+    & ~ .directorate-form, & ~ .department-form, & ~ .user-form{
+        animation: hide-form 0.5s forwards;
+    }
+}
+
+@mixin navbar-button{
+    background: none;
+    border: none;
+    padding: 10px;
+    transition: 0.2s;
+    font-family: $theme-font-base;
+    font-weight: bold;
+    font-size: 18px;
+    height: 40px;
+    position: relative;
+    min-width: 40px;
+
+    &:hover{
+        background-color: rgba(177, 176, 176, 0.5);
+        box-shadow: $theme-box-shadow;
+    }
+}
+
+@mixin navbar-panel-show{
+    @keyframes toggle-show {
+        50%{
+            margin: 58px 0;
+            z-index: -1;
+        }
+        55%{
+            z-index: 2;
+            width: 370px;
+        }
+        to{
+            margin: 38px 0;
+            padding: 4px 16px;
+            width: 400px;
+            z-index: 2;
+        }
+    }
+
+    animation: toggle-show .5s forwards;
+    box-shadow: $theme-box-shadow;
+}
+
+@mixin navbar-panel-hide{
+    @keyframes toggle-hide {
+        from{
+            margin: 38px 0;
+            padding: 4px 16px;
+            width: 400px;
+            z-index: 2;
+            
+        }
+        55%{
+            margin: 58px 0;
+            width: 370px;
+            z-index: -1;
+        }
+        to{
+            margin: 8px 0;
+            padding: 0;
+            z-index: -1;
+        }
+    }
+
+    animation: toggle-hide .5s forwards;
 }

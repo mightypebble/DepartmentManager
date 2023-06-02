@@ -1,0 +1,14 @@
+// colors
+$theme-color-primary: lightgray;
+$theme-color-secondary: white;
+$theme-color-hover: rgb(196, 250, 115);
+$theme-color-warning-color: red;
+$theme-box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+$theme-box-shadow-inset: rgba(0, 0, 0, 0.06) 0px 2px 4px 0px inset;
+
+// fonts
+@font-face {
+    font-family: 'Ubuntu';
+    src: url('../assets/fonts/Ubuntu-Regular.ttf');
+}
+$theme-font-base: 'Ubuntu';

@@ -1,53 +1,67 @@
-<h2>Welcome, {{name}}</h2>
+<app-navbar></app-navbar>
 <button class="department-back-button" *ngIf="backButtonExists" (click)="back()"><h3>BACK</h3></button>
-<button class="department-logout-button" (click)="logout()"><h3>LOGOUT</h3></button>
-<form class="department-form" (ngSubmit)="onSubmit()" #departmentForm="ngForm" ngNativeValidate>
-  <h2>Add Department</h2>
-  <input type="text" name="name" [(ngModel)]="department.name"  placeholder="name" required>
-  <input type="text" name="description" [(ngModel)]="department.description" placeholder="description" required>
-  <p *ngIf="nameError">
-    This department already exists
-  </p>
-  <button>Add</button>
-</form>
-<h1 class="department-header">{{directorate}}'s departments</h1>
-<input class="department-search" #searchBox type="text" (keyup.enter)="search(searchBox.value, searchBox.value.length)" placeholder="Search by name">
-<div class="department-nav">
-  <button class="arrow-first" (click)="firstPage()"></button>
-  <button class="arrow-left" (click)="prev()"></button>
-  <p class="first-page-index">1 ...</p>
-  <p *ngIf="(offset + 3) <= departmentCount">{{offset + 1}} - {{offset + 3}}</p>
-  <p *ngIf="!((offset + 3) <= departmentCount) && !filteredDepartmentCount">{{offset + 1}} - {{departmentCount}}</p>
-  <p *ngIf="!((offset + 3) <= departmentCount) && filteredDepartmentCount">{{offset + 1}} - {{filteredDepartmentCount}}</p>
-  <p class="last-page-index" *ngIf="!filteredDepartmentCount">... {{departmentCount}}</p>
-  <p class="last-page-index" *ngIf="filteredDepartmentCount">... {{filteredDepartmentCount}}</p>
-  <button class="arrow-right" (click)="next()"></button>
-  <button class="arrow-last" (click)="lastPage()"></button>
-</div>
-<div class="department-container">
-  <div class="item-container" *ngFor="let dep of filteredDepartments">
-    <button class="department" (click)="showMenu(dep)">
-      <h2 class="department-text">{{dep.name}}</h2>
-      <p *ngIf="dep.head" class="department-text">{{dep.head.name + " " + dep.head.surname}}</p>
-      <p *ngIf="!dep.head" class="department-text">[unheaded]</p>
-      <p class="department-text">{{dep.description}}</p>
-    </button>
-    <div [class]="'menu' + (dep.shown ? ' show' : '')">
-      <button class="menu-option" (click)="openDep(dep.name)">open</button>
-      <button class="menu-option" (click)="editForm(dep)">edit</button>
-      <button class="menu-option" (click)="deleteConfirm(dep)">delete</button>
-    </div>
-    <div [class]="'department-form delete-form' + (dep.deleteConfirm ? ' display' : '')">
-      <p>Are you sure you want to delete {{dep.name}}</p>
-      <button (click)="deleteDepartment(dep.id)">delete</button>
-      <button (click)="deleteConfirm(dep)">cancel</button>
-    </div>
-    <form [class]="'department-form edit-department-form' + (dep.editForm ? ' show' : '')"
-     (ngSubmit)="editDepartment(dep.name)" #departmentForm="ngForm" ngNativeValidate>
-      <h2>Edit {{dep.name}}</h2>
+<div class="addition-form-container">
+  <button class="form-button" (click)="openAddForm()">
+    <p>+</p>
+  </button>
+  <form class="department-form addition-form" (ngSubmit)="onSubmit()" #departmentForm="ngForm" ngNativeValidate>
+    <h2>Add Department</h2>
+    <div class="input-container">
       <input type="text" name="name" [(ngModel)]="department.name"  placeholder="name" required>
       <input type="text" name="description" [(ngModel)]="department.description" placeholder="description" required>
-      <button>Submit</button>
-    </form>
+    </div>
+    <p *ngIf="nameError">
+      This department already exists
+    </p>
+    <button>Add</button>
+  </form>
+</div>
+<div class="department-container">
+  <table>
+    <tr>
+      <th>Name</th>
+      <th>Dep. Head</th>
+      <th>Description</th>
+    </tr>
+    <div *ngFor="let dep of filteredDepartments">
+      <tr (click)="showMenu(dep)">
+        <td><h2 class="department-text">{{dep.name}}</h2></td>
+        <td *ngIf="dep.head"><p class="department-text">{{dep.head.name + " " + dep.head.surname}}</p></td>
+        <td *ngIf="!dep.head"><p class="department-text">[unheaded]</p></td>
+        <td><p class="department-text">{{dep.description}}</p></td>
+      </tr>
+      <div [class]="'menu' + (dep.shown ? ' display-flex' : '')">
+        <button class="menu-option" (click)="openDep(dep.name)">open</button>
+        <button class="menu-option" (click)="editForm(dep)">edit</button>
+        <button class="menu-option" (click)="deleteConfirm(dep)">delete</button>
+      </div>
+      <div [class]="'department-form delete-form' + (dep.deleteConfirm ? ' display' : '')">
+        <p>Are you sure you want to delete {{dep.name}}</p>
+        <button (click)="deleteDepartment(dep.id)">delete</button>
+        <button (click)="deleteConfirm(dep)">cancel</button>
+      </div>
+      <form [class]="'department-form edit-department-form' + (dep.editForm ? ' display' : '')"
+       (ngSubmit)="editDepartment(dep.name)" #departmentForm="ngForm" ngNativeValidate>
+        <h2>Edit {{dep.name}}</h2>
+        <div class="input-container">
+          <input type="text" name="name" [(ngModel)]="department.name"  placeholder="name" required>
+          <input type="text" name="description" [(ngModel)]="department.description" placeholder="description" required>
+        </div>
+        <button>Submit</button>
+      </form>
+    </div>
+  </table>
+  <div class="department-nav">
+    <button class="arrow-first" (click)="firstPage()"></button>
+    <button class="arrow-left" (click)="prev()"></button>
+    <p class="first-page-index">1 ...</p>
+    <p *ngIf="(offset + 10) <= filteredDepartmentCount && filteredDepartmentCount">{{offset + 1}} - {{offset + 10}}</p>
+    <p *ngIf="(offset + 10) <= departmentCount && !filteredDepartmentCount">{{offset + 1}} - {{offset + 10}}</p>
+    <p *ngIf="!((offset + 10) <= departmentCount) && !filteredDepartmentCount">{{offset + 1}} - {{departmentCount}}</p>
+    <p *ngIf="!((offset + 10) <= filteredDepartmentCount) && filteredDepartmentCount">{{offset + 1}} - {{filteredDepartmentCount}}</p>
+    <p class="last-page-index" *ngIf="!filteredDepartmentCount">... {{departmentCount}}</p>
+    <p class="last-page-index" *ngIf="filteredDepartmentCount">... {{filteredDepartmentCount}}</p>
+    <button class="arrow-right" (click)="next()"></button>
+    <button class="arrow-last" (click)="lastPage()"></button>
   </div>
 </div>

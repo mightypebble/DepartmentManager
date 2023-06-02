@@ -13,11 +13,11 @@ import com.example.myapp.entities.Directorate;
 @Repository
 public interface DepartmentRepository extends JpaRepository<Department, Long> {
 
-	@Query(value = "SELECT * FROM Department WHERE directorate = :dir ORDER BY id DESC LIMIT 3 OFFSET :offset", nativeQuery = true)
+	@Query(value = "SELECT * FROM Department WHERE directorate = :dir ORDER BY id DESC LIMIT 10 OFFSET :offset", nativeQuery = true)
     List<Department> find3(@Param("offset") int offset, @Param("dir") Long id);
 	
 	@Query(value = "SELECT * FROM Department WHERE name LIKE CONCAT('%',:keyword,'%')"
-			+ " ORDER BY id DESC LIMIT 3 OFFSET :offset", nativeQuery = true)
+			+ " ORDER BY id DESC LIMIT 10 OFFSET :offset", nativeQuery = true)
 	List<Department> searchDepartments(@Param("keyword") String keyword, @Param("offset") int offset);
     
 	@Query(value = "SELECT COUNT(DISTINCT id) FROM Department WHERE directorate = :dir", nativeQuery = true)
@@ -26,7 +26,7 @@ public interface DepartmentRepository extends JpaRepository<Department, Long> {
 			);
 	
 	@Query(value = "SELECT COUNT(DISTINCT id) FROM Department WHERE directorate = :dir"
-			+ " AND name LIKE CONCAT(:keyword,'%')", nativeQuery = true)
+			+ " AND name LIKE CONCAT('%',:keyword,'%')", nativeQuery = true)
 	int getFilteredDepartmentCount(
 			@Param("keyword") String keyword,
 			@Param("dir") Long id

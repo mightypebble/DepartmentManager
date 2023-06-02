@@ -1,6 +1,6 @@
 import { DOCUMENT } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { Component, ElementRef, Inject, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Directorate } from '../directorate';
 import { DirectorateServiceService } from '../directorate-service.service';
@@ -13,7 +13,7 @@ import { LoginService } from '../login.service';
   templateUrl: './directorate.component.html',
   styleUrls: ['./directorate.component.scss'],
 })
-export class DirectorateComponent implements OnInit {
+export class DirectorateComponent implements OnInit{
 
   name = localStorage.getItem('user');
   directorates: any;
@@ -54,7 +54,7 @@ export class DirectorateComponent implements OnInit {
       this.lastTerm = term;
       this.lastLength = length;
       this.filteredDirectorates = data;
-      this.directorateService.search(term, this.offset + 3).subscribe(data => {
+      this.directorateService.search(term, this.offset + 10).subscribe(data => {
         if (!data.length) {
           this._elementRef.nativeElement.querySelector('.arrow-right').style.visibility = 'hidden';
           this._elementRef.nativeElement.querySelector('.arrow-last').style.visibility = 'hidden';
@@ -81,7 +81,7 @@ export class DirectorateComponent implements OnInit {
       this.directoratesAreFiltered = false;
       this.filteredDirectorateCount = 0;
     }
-    if (this.offset < 3) {
+    if (this.offset < 10) {
       this._elementRef.nativeElement.querySelector('.arrow-left').style.visibility = 'hidden';
       this._elementRef.nativeElement.querySelector('.arrow-first').style.visibility = 'hidden';
       this._elementRef.nativeElement.querySelector('.first-page-index').style.visibility = 'hidden';
@@ -93,13 +93,13 @@ export class DirectorateComponent implements OnInit {
   }
 
   next() {
-    this.offset += 3;
+    this.offset += 10;
     if (!this.directoratesAreFiltered) this.ngOnInit();
     else this.search(this.lastTerm, this.lastLength);
   }
 
   prev() {
-    this.offset -= 3;
+    this.offset -= 10;
     if (!this.directoratesAreFiltered) this.ngOnInit();
     else this.search(this.lastTerm, this.lastLength);
   }
@@ -112,13 +112,13 @@ export class DirectorateComponent implements OnInit {
 
   lastPage() {
     if (!this.directoratesAreFiltered) {
-      if (this.directorateCount%3 == 0) this.offset = (Math.floor((this.directorateCount - 1) / 3) * 3);
-      else this.offset = (Math.floor(this.directorateCount / 3) * 3)
+      if (this.directorateCount%10 == 0) this.offset = (Math.floor((this.directorateCount - 1) / 10) * 10);
+      else this.offset = (Math.floor(this.directorateCount / 10) * 10)
       this.ngOnInit()
     }
     else {
-      if (this.filteredDirectorateCount%3 == 0) this.offset = (Math.floor((this.filteredDirectorateCount - 1) / 3) * 3)
-      else this.offset = (Math.floor(this.filteredDirectorateCount / 3) * 3)
+      if (this.filteredDirectorateCount%10 == 0) this.offset = (Math.floor((this.filteredDirectorateCount - 1) / 10) * 10)
+      else this.offset = (Math.floor(this.filteredDirectorateCount / 10) * 10)
       this.search(this.lastTerm, this.lastLength);
     }
   }
@@ -131,11 +131,6 @@ export class DirectorateComponent implements OnInit {
     } else {
       this.passwordError = true;
     }
-  }
-
-  logout() {
-    this.loginService.deleteToken();
-    this.router.navigate(['/login']);
   }
 
   editDirectorate(name: string) { // change directorate details
@@ -152,10 +147,6 @@ export class DirectorateComponent implements OnInit {
 
   fireDirector(directorate: string ,id: number) {
     this.userService.fireDirector(directorate, id).subscribe(result => this.router.navigate(['/']));
-  }
-
-  unblock() {
-    this.userService.unblock().subscribe(result => this.router.navigate(['/']));
   }
 
   unblockDirector(id: number) {
@@ -187,13 +178,26 @@ export class DirectorateComponent implements OnInit {
     this.router.navigate([`directorate/${name}`]);
   }
 
+  openAddForm() {
+    this._elementRef.nativeElement.querySelector('.form-button').classList.remove('form-button--inactive');
+    this._elementRef.nativeElement.querySelector('.form-button').classList.add('form-button--active');
+  }
+
   ngOnInit() {
+    this._elementRef.nativeElement.addEventListener('click', (e: any) => {
+      if (!this._elementRef.nativeElement.querySelector('.directorate-form').contains(e.target) &&
+      !this._elementRef.nativeElement.querySelector('.form-button').contains(e.target) &&
+      this._elementRef.nativeElement.querySelector('.form-button').classList.contains('form-button--active')) {
+        this._elementRef.nativeElement.querySelector('.form-button').classList.remove('form-button--active');
+        this._elementRef.nativeElement.querySelector('.form-button').classList.add('form-button--inactive');
+      }
+    });
     if (!this.directorateCount) {
       this.directorateService.getDirectorateCount().subscribe((data: any) => {
         this.directorateCount = data;
       });
     }
-    this.directorateService.findAll(this.offset + 3).subscribe(data => {
+    this.directorateService.findAll(this.offset + 10).subscribe(data => {
       if (!data.length) {
         this._elementRef.nativeElement.querySelector('.arrow-right').style.visibility = 'hidden';
         this._elementRef.nativeElement.querySelector('.arrow-last').style.visibility = 'hidden';
@@ -208,7 +212,7 @@ export class DirectorateComponent implements OnInit {
     this.directorateService.findAll(this.offset).subscribe((data) => {
       this.directorates = data;
       this.filteredDirectorates = this.directorates;
-      if (this.offset < 3) {
+      if (this.offset < 10) {
         this._elementRef.nativeElement.querySelector('.arrow-left').style.visibility = 'hidden';
         this._elementRef.nativeElement.querySelector('.arrow-first').style.visibility = 'hidden';
         this._elementRef.nativeElement.querySelector('.first-page-index').style.visibility = 'hidden';
